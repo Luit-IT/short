@@ -1,4 +1,4 @@
-# URL Shortener in Go, Redis and Varnish
+# URL Shortener using Varnish and Redis
 
 This URL shortener is a personal project to have an URL shortener that runs
 with the stuff I already have.  The interface to the shortener is a Go
@@ -9,14 +9,36 @@ is stored.
 [Redis]: http://redis.io/
 
 
+## Overall architecture
+
+A URL shortener is by definition a key->value based system. As you might know,
+Redis is "an open source, advanced key-value store", according to it's
+website. For what this URL shortener should become it's a good fit. It
+features simple but powerful commands, lightning-fast and predictable
+performance (the documentation shows the big-O complexity for each command),
+and even though it's an in-memory database it has a range of very good
+[persistence][] options. Also there's a good set of language bindings, and the
+C library [hiredis][] is very easy to use. 
+
+On one side a URL shortener, like the name, shortens URLs by inserting
+key->value pairs into storage. On the other side a URL shortener forwards
+requests by doing a lookup of the key supplied in the request URL, and
+returning a HTTP redirect response to the URL that was stored. The lookup and
+redirect part will be a Varnish module/configuration, connecting directly to
+Redis. The insertion part can be anything with access to the Redis database.
+Command-line tools, web-apps, redis-cli with hand-issued commands, anything!
+
+[persistence]: http://redis.io/topics/persistence
+[hiredis]: https://github.com/antirez/hiredis
+
+
 ## Redis storage format
 
-A URL shortener is by definition a key->value based system. Redis could handle
-the key->value combinations as [Strings][], but after reading how
-[Instagram][] used Redis to map [300 photos back to the user ID][] it was
-clear to me that using Redis [Hashes][] was a better option. I don't really
-expect my own URL shortener to be impacted much by this. Who knows, maybe it
-will. 
+Redis could handle the key->value combinations as [Strings][], but after
+reading how [Instagram][] used Redis to map [300 photos back to the user ID][]
+it was clear to me that using Redis [Hashes][] was a better option. I don't
+really expect my own URL shortener to be impacted much by this. Who knows,
+maybe it will.
 
 The keys are split up in a slightly different way than what Instagram did. The
 name of the hash is something like "shortener-" or "short:", with `n`
@@ -115,4 +137,19 @@ HTTP redirect response should be issued. If it doesn't, it's a 404 Not Found.
 
 ## TODO
 
-Just about everything!
+Just about everything! The tools pyshort and src/add/main.go generate hashes
+at the moment, usable for inserting by hand using the returned hash. 
+
+As for lookup and redirect, so-far I have built something that works in
+[Inline C][] in the configuration (VCL), changing the init script to include
+configuration compiler flags to dynamically link to [hiredis][]. This
+configuration is [posted here][]. Next step is to build a [VMOD][] that
+removes the hiredis code from VCL to be able to keep the default compiler
+flags and to make the VCL less complicated in general. I'll either use
+[libvmod-redis][], fork and improve it, roll my own redis VMOD, or a
+combination of those.
+
+[Inline C]: http://a.luit.it/l/7ofl
+[posted here]: https://gist.github.com/1415852
+[VMOD]: https://www.varnish-cache.org/docs/3.0/reference/vmod.html
+[libvmod-redis]: https://github.com/zephirworks/libvmod-redis
