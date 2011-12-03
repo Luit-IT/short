@@ -52,7 +52,7 @@ presentation.
 As mentioned in the "Key generation" section the generated key doesn't always
 have to be used in full. If for example a relatively short URL like
 `http://canyoucrackit.co.uk/soyoudidit.asp` is hashed it produces the hash
-`Nw9W82DjTt_wGeaVNpNqV8fuF0E=` when using the key generation scheme used
+`Nw9W82DjTt_wGeaVNpNqV8fuF0E=` when using the key generation scheme described
 above. With this key appended to the URL shortener's own address it produces a
 URL like `http://a.luit.it/l/Nw9W82DjTt_wGeaVNpNqV8fuF0E=`, which isn't much
 shorter than the original. It's actually longer. 
