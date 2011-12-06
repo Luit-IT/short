@@ -49,7 +49,7 @@ the key prefix is "short:" + two characters.
 
 [Strings]: http://redis.io/topics/data-types#strings
 [Instagram]: http://instagr.am/
-[300 photos back to the user ID]: http://a.luit.it/l/sHvK
+[300 photos back to the user ID]: http://luit.it/l/sHvK
 [Hashes]:  http://redis.io/topics/data-types#hashes
 
 
@@ -76,7 +76,7 @@ have to be used in full. If for example a relatively short URL like
 `http://canyoucrackit.co.uk/soyoudidit.asp` is hashed it produces the hash
 `Nw9W82DjTt_wGeaVNpNqV8fuF0E=` when using the key generation scheme described
 above. With this key appended to the URL shortener's own address it produces a
-URL like `http://a.luit.it/l/Nw9W82DjTt_wGeaVNpNqV8fuF0E=`, which isn't much
+URL like `http://luit.it/l/Nw9W82DjTt_wGeaVNpNqV8fuF0E=`, which isn't much
 shorter than the original. It's actually longer.
 
 To avoid too much checking there's a minimal length of the used key. I'm using
@@ -121,9 +121,9 @@ Redis Hash is done during our transaction).
 ## Lookup
 
 Lookup of a URL is quite straight forward. The incoming URL looks something
-like `http://a.luit.it/l/sHvK`. There's several ways you can handle this. You
-could take *anything* that's given after `http://a.luit.it/l/` and use it as
-our key, but that might give us some issues with excessively long or otherwise
+like `http://luit.it/l/sHvK`. There's several ways you can handle this. You
+could take *anything* that's given after `http://luit.it/l/` and use it as our
+key, but that might give us some issues with excessively long or otherwise
 evilly fabricated URLs. In varnish using `req.url ~
 "/l/[A-Za-z0-9\-_]{4,}=?=?$"` will avoid the lookup using keys that are too
 short (length 2 or shorter might be harmful), or contain characters we're not
@@ -164,7 +164,7 @@ Still missing from the response: the right code (Moved Permanently instead of
 Found), some caching headers, and last but not least: generate it from the
 application used to insert the information, based on it's configuration.
 
-[Inline C]: http://a.luit.it/l/7ofl
+[Inline C]: http://luit.it/l/7ofl
 [posted here]: https://gist.github.com/1415852
 [VMOD]: https://www.varnish-cache.org/docs/3.0/reference/vmod.html
 [libvmod-redis]: https://github.com/zephirworks/libvmod-redis
