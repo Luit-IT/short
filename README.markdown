@@ -124,9 +124,9 @@ Lookup of a URL is quite straight forward. The incoming URL looks something
 like `http://luit.it/l/sHvK`. There's several ways you can handle this. You
 could take *anything* that's given after `http://luit.it/l/` and use it as our
 key, but that might give us some issues with excessively long or otherwise
-evilly fabricated URLs. In varnish using `req.url ~
-"/l/[A-Za-z0-9\-_]{4,}=?=?$"` will avoid the lookup using keys that are too
-short (length 2 or shorter might be harmful), or contain characters we're not
+evilly fabricated URLs. In varnish using regular expression substitution to
+generate the Redis command will avoid the lookup of keys that are too short
+(length 2 or shorter might be harmful), or contain characters we're not
 expecting.
 
 All that's to be done in the lookup is run one command on Redis. For the
