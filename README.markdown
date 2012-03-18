@@ -35,10 +35,10 @@ Command-line tools, web-apps, redis-cli with hand-issued commands, anything!
 ## Redis storage format
 
 Redis could handle the key->value combinations as [Strings][], but after
-reading how [Instagram][] used Redis to map [300 photos back to the user ID][]
-it was clear to me that using Redis [Hashes][] was a better option. I don't
-really expect my own URL shortener to be impacted much by this. Who knows,
-maybe it will.
+reading how [Instagram][] used Redis to map [300 million photos back to the
+user ID][] it was clear to me that using Redis [Hashes][] was a better option.
+I don't really expect my own URL shortener to be impacted much by this. Who
+knows, maybe it will.
 
 The keys are split up in a slightly different way than what Instagram did. The
 name of the hash is something like "shortener-" or "short:", with `n`
@@ -49,7 +49,7 @@ the key prefix is "short:" + two characters.
 
 [Strings]: http://redis.io/topics/data-types#strings
 [Instagram]: http://instagr.am/
-[300 photos back to the user ID]: http://luit.it/l/sHvK
+[300 million photos back to the user ID]: http://luit.it/l/sHvK
 [Hashes]:  http://redis.io/topics/data-types#hashes
 
 
